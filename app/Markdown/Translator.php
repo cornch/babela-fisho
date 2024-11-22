@@ -12,15 +12,16 @@ use App\Markdown\NodeExtractors\ListItemExtractor;
 use App\Markdown\NodeExtractors\ParagraphExtractor;
 use App\Markdown\NodeExtractors\QuoteExtractor;
 use App\Markdown\NodeExtractors\TableCellExtractor;
+use Gettext\Translations;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Environment\EnvironmentInterface;
+use League\CommonMark\Extension\CommonMark\Node\Block\FencedCode;
+use League\CommonMark\Node\Block\Document;
 use League\CommonMark\Parser\MarkdownParserInterface;
 use League\CommonMark\Node\Node;
 use Wnx\CommonmarkMarkdownRenderer\MarkdownRendererExtension;
-use function app;
-use function array_map;
 
-final class Extractor
+final class Translator
 {
     /** @var array<NodeExtractor> */
     private(set) array $nodeExtractors = [];
@@ -38,41 +39,40 @@ final class Extractor
         ];
 
         $this->nodeExtractors = array_map(
-            fn(string $extractor) => app()->make($extractor),
+            fn (string $extractor) => app()->make($extractor),
             $extractors,
         );
     }
 
-    public function addNodeExtractors(NodeExtractor $nodeExtractor): void
-    {
-        $this->nodeExtractors[] = $nodeExtractor;
-    }
-
-    /**
-     * @param string $markdown
-     *
-     * @return array<TranslatableUnit>
-     * @throws \League\CommonMark\Exception\CommonMarkException
-     */
-    public function extract(string $markdown): array
+    public function translate(string $markdown, Translations $translations): Document
     {
         $document = $this->parser->parse($markdown);
-        $walker = $document->walker();
-        $units = [];
+        $iterator = $document->iterator();
 
-        while ($event = $walker->next()) {
-            if ($event->isEntering()) {
-                $node = $event->getNode();
-                $unit = $this->extractUnit($node);
-                if ($unit !== null) {
-                    $units[] = $unit;
-                    // if we already have a unit, we can skip the children
-                    $walker->resumeAt($node, false);
+        foreach ($iterator as $node) {
+            if ($node instanceof FencedCode) {
+                $literal = $node->getLiteral();
+                if (str_ends_with($literal, "\n")) {
+                    $node->setLiteral(substr($literal, 0, -1));
                 }
+            }
+
+            $unit = $this->extractUnit($node);
+            if ($unit === null) {
+                continue;
+            }
+
+            // if we have a unit, we are going to replace it
+            $translation = $translations->find(null, $unit->content);
+
+            if ($translation !== null) {
+                $translated = $translation->getTranslation();
+                $translatedDocument = $this->parser->parse($translated);
+                $node->replaceWith($translatedDocument->firstChild());
             }
         }
 
-        return $units;
+        return $document;
     }
 
     private function extractUnit(Node $node): ?TranslatableUnit

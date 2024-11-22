@@ -3,12 +3,20 @@
 namespace App\Commands;
 
 use App\Markdown\Extractor;
+use App\Markdown\NodeExtractors\FencedCodeExtractor;
+use App\Markdown\NodeExtractors\HeadingExtractor;
+use App\Markdown\NodeExtractors\HtmlExtractor;
+use App\Markdown\NodeExtractors\ParagraphExtractor;
+use App\Markdown\NodeExtractors\QuoteExtractor;
+use App\Markdown\NodeExtractors\TableCellExtractor;
 use Gettext\Generator\PoGenerator;
 use Gettext\Translation;
 use Gettext\Translations;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\File;
 use LaravelZero\Framework\Commands\Command;
+use function app;
+use function array_map;
 
 final class ToPoCommand extends Command
 {
@@ -20,7 +28,6 @@ final class ToPoCommand extends Command
         $inputs = $this->argument('inputs');
         $output = $this->option('output') ?: 'php://stdout';
 
-        $extractor->useDefaultNodeExtractors();
         $poGenerator = new PoGenerator();
         $pendingTranslations = [];
         $existingTranslations = [];

@@ -281,7 +281,19 @@ dataset('Extractable Contents', [
 
 it('extracts translatable units', function ($code, $extracted) {
     $extractor = app()->make(Extractor::class);
-    $extractor->useDefaultNodeExtractors();
+    $extractors = [
+        \App\Markdown\NodeExtractors\HeadingExtractor::class,
+        \App\Markdown\NodeExtractors\ParagraphExtractor::class,
+        \App\Markdown\NodeExtractors\QuoteExtractor::class,
+        \App\Markdown\NodeExtractors\FencedCodeExtractor::class,
+        \App\Markdown\NodeExtractors\TableCellExtractor::class,
+        \App\Markdown\NodeExtractors\HtmlExtractor::class,
+    ];
+
+    $extractor->nodeExtractors = array_map(
+        fn(string $extractor) => app()->make($extractor),
+        $extractors,
+    );
     $units = $extractor->extract($code);
 
     if (empty($extracted)) {
@@ -367,8 +379,6 @@ it('extract a complete markdown file', function () {
 
 
     $extractor = app()->make(Extractor::class);
-    $extractor->useDefaultNodeExtractors();
-
     $units = $extractor->extract($markdown);
 
     foreach ($expected as $i => $expectedUnit) {

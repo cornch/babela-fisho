@@ -19,6 +19,6 @@ final class CalloutRenderer implements NodeRendererInterface
     {
         Callout::assertInstanceOf($node);
 
-        return "> [!{$node->type}]  \n" . $childRenderer->renderNodes($node->children()) . '~~';
+        return "> [!{$node->type}]  \n> " . $childRenderer->renderNodes($node->children());
     }
 }
