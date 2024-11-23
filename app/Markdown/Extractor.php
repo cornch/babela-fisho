@@ -5,7 +5,7 @@ namespace App\Markdown;
 use App\Data\TranslatableUnit;
 use App\Markdown\NodeExtractors\CalloutExtractor;
 use App\Markdown\NodeExtractors\Contracts\NodeExtractor;
-use App\Markdown\NodeExtractors\FencedCodeExtractor;
+use App\Markdown\NodeExtractors\CodeExtractor;
 use App\Markdown\NodeExtractors\HeadingExtractor;
 use App\Markdown\NodeExtractors\HtmlExtractor;
 use App\Markdown\NodeExtractors\ListItemExtractor;
@@ -32,7 +32,7 @@ final class Extractor
             HeadingExtractor::class,
             ParagraphExtractor::class,
             QuoteExtractor::class,
-            FencedCodeExtractor::class,
+            CodeExtractor::class,
             TableCellExtractor::class,
             HtmlExtractor::class,
         ];

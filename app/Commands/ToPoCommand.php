@@ -3,7 +3,7 @@
 namespace App\Commands;
 
 use App\Markdown\Extractor;
-use App\Markdown\NodeExtractors\FencedCodeExtractor;
+use App\Markdown\NodeExtractors\CodeExtractor;
 use App\Markdown\NodeExtractors\HeadingExtractor;
 use App\Markdown\NodeExtractors\HtmlExtractor;
 use App\Markdown\NodeExtractors\ParagraphExtractor;

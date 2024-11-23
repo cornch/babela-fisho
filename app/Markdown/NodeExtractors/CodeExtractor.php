@@ -4,13 +4,14 @@ namespace App\Markdown\NodeExtractors;
 
 use App\Data\TranslatableUnit;
 use League\CommonMark\Extension\CommonMark\Node\Block\FencedCode;
+use League\CommonMark\Extension\CommonMark\Node\Block\IndentedCode;
 use League\CommonMark\Node\Node;
 
-final class FencedCodeExtractor extends BaseNodeExtractor
+final class CodeExtractor extends BaseNodeExtractor
 {
     public function extractable(Node $node): bool
     {
-        return $node instanceof FencedCode;
+        return $node instanceof FencedCode || $node instanceof IndentedCode;
     }
 
     public function extract(Node $node): TranslatableUnit
@@ -19,8 +20,8 @@ final class FencedCodeExtractor extends BaseNodeExtractor
             throw new \InvalidArgumentException('Node is not extractable');
         }
 
-        /** @var FencedCode $node*/
-        $lang = $node->getInfo();
+        /** @var FencedCode|IndentedCode $node*/
+        $lang = $node instanceof FencedCode ? $node->getInfo() : null;
 
         return new TranslatableUnit(
             node: $node,

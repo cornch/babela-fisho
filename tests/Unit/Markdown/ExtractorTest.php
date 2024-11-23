@@ -285,7 +285,7 @@ it('extracts translatable units', function ($code, $extracted) {
         \App\Markdown\NodeExtractors\HeadingExtractor::class,
         \App\Markdown\NodeExtractors\ParagraphExtractor::class,
         \App\Markdown\NodeExtractors\QuoteExtractor::class,
-        \App\Markdown\NodeExtractors\FencedCodeExtractor::class,
+        \App\Markdown\NodeExtractors\CodeExtractor::class,
         \App\Markdown\NodeExtractors\TableCellExtractor::class,
         \App\Markdown\NodeExtractors\HtmlExtractor::class,
     ];
