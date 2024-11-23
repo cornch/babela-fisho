@@ -64,6 +64,8 @@ final class Translator
                 continue;
             }
 
+            ray($unit);
+
             // if we have a unit, we are going to replace it
             $translation = $translations->find(null, $unit->content);
 

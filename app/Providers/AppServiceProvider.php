@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Extensions\Block\Element\Callout;
 use App\Extensions\MarkdownRenderer\CalloutRenderer;
+use App\Extensions\MarkdownRenderer\LinkRenderer;
 use App\Extensions\MarkdownRenderer\StrikethroughRenderer;
 use App\Extensions\MarkdownRenderer\TableRenderer;
 use App\Extensions\Parsers\CalloutParser;
@@ -11,6 +12,7 @@ use App\Markdown\Parsers\MarkdownDivParser;
 use Illuminate\Support\ServiceProvider;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
+use League\CommonMark\Extension\CommonMark\Node\Inline\Link;
 use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
 use League\CommonMark\Extension\Strikethrough\Strikethrough;
 use League\CommonMark\Extension\Table\Table;
@@ -34,6 +36,7 @@ class AppServiceProvider extends ServiceProvider
                 $environment->addRenderer(Strikethrough::class, new StrikethroughRenderer());
                 $environment->addRenderer(Callout::class, new CalloutRenderer());
                 $environment->addRenderer(Table::class, new TableRenderer());
+                $environment->addRenderer(Link::class, new LinkRenderer(), 10);
 
                 return new MarkdownRenderer($environment);
             },

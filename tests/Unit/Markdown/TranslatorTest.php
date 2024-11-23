@@ -15,7 +15,12 @@ it('translates a markdown', function () {
     // This is a code block
     echo 'Hello World';
     ```
-    
+
+        // This is also a code block
+        echo 'Hello World, again';
+
+    [This]({{link}}) is a link.
+
     > [!NOTE]  
     > This is a note callout.
 
@@ -37,7 +42,9 @@ it('translates a markdown', function () {
         'Hello World' => 'Saluton Mondo',
         'This is a paragraph.' => 'Tio estas paragrafo.',
         "// This is a code block\necho 'Hello World';" => "// Tio estas koda bloko\necho 'Saluton Mondo';",
+        "// This is also a code block\necho 'Hello World, again';" => "// Tio estas ankaŭ koda bloko\necho 'Saluton Mondo, denove';",
         'This is a note callout.' => 'Tio estas nota callout.',
+        '[This]({{link}}) is a link.' => '[Ĉi tio]({{link}}) estas ligilo.',
         'Another heading' => 'Alia titolo',
         'List item 1' => 'Listo elemento 1',
         'List item 2' => 'Listo elemento 2',
@@ -72,6 +79,10 @@ it('translates a markdown', function () {
             // Tio estas koda bloko
             echo 'Saluton Mondo';
             ```
+                // Tio estas ankaŭ koda bloko
+                echo 'Saluton Mondo, denove';
+            [Ĉi tio]({{link}}) estas ligilo.
+
             > [!NOTE]  
             > Tio estas nota callout.
 
