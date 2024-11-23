@@ -15,6 +15,9 @@ it('translates a markdown', function () {
     // This is a code block
     echo 'Hello World';
     ```
+    
+    > [!NOTE]  
+    > This is a note callout.
 
     ## Another heading
 
@@ -34,6 +37,7 @@ it('translates a markdown', function () {
         'Hello World' => 'Saluton Mondo',
         'This is a paragraph.' => 'Tio estas paragrafo.',
         "// This is a code block\necho 'Hello World';" => "// Tio estas koda bloko\necho 'Saluton Mondo';",
+        'This is a note callout.' => 'Tio estas nota callout.',
         'Another heading' => 'Alia titolo',
         'List item 1' => 'Listo elemento 1',
         'List item 2' => 'Listo elemento 2',
@@ -68,6 +72,9 @@ it('translates a markdown', function () {
             // Tio estas koda bloko
             echo 'Saluton Mondo';
             ```
+            > [!NOTE]  
+            > Tio estas nota callout.
+
             ## Alia titolo
 
             - Listo elemento 1
