@@ -3,7 +3,6 @@
 namespace App\Markdown;
 
 use App\Data\TranslatableUnit;
-use App\Markdown\NodeExtractors\CalloutExtractor;
 use App\Markdown\NodeExtractors\Contracts\NodeExtractor;
 use App\Markdown\NodeExtractors\CodeExtractor;
 use App\Markdown\NodeExtractors\HeadingExtractor;
@@ -13,15 +12,12 @@ use App\Markdown\NodeExtractors\ParagraphExtractor;
 use App\Markdown\NodeExtractors\QuoteExtractor;
 use App\Markdown\NodeExtractors\TableCellExtractor;
 use Gettext\Translations;
-use League\CommonMark\Environment\Environment;
-use League\CommonMark\Environment\EnvironmentInterface;
 use League\CommonMark\Extension\CommonMark\Node\Block\FencedCode;
 use League\CommonMark\Extension\CommonMark\Node\Block\IndentedCode;
 use League\CommonMark\Node\Block\Document;
 use League\CommonMark\Node\Block\Paragraph;
 use League\CommonMark\Parser\MarkdownParserInterface;
 use League\CommonMark\Node\Node;
-use Wnx\CommonmarkMarkdownRenderer\MarkdownRendererExtension;
 
 final class Translator
 {
@@ -63,8 +59,6 @@ final class Translator
             if ($unit === null) {
                 continue;
             }
-
-            ray($unit);
 
             // if we have a unit, we are going to replace it
             $translation = $translations->find(null, $unit->content);

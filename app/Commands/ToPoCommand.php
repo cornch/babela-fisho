@@ -39,7 +39,8 @@ final class ToPoCommand extends Command
             foreach ($translatableUnits as $translatableUnit) {
                 $content = $translatableUnit->content;
                 $translation = $existingTranslations[$content]
-                    ??= Translation::create($translatableUnit->type, $translatableUnit->content);
+                    ??= Translation::create(null, $translatableUnit->content);
+                $translation->getComments()->add($translatableUnit->type);
                 $translation->getReferences()->add($input, $translatableUnit->line);
 
                 $pendingTranslations[] = $translation;
